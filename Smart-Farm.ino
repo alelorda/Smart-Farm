@@ -1,5 +1,3 @@
-#define sarasa
-
 void setup() {
 
 }
