@@ -19,9 +19,6 @@ int humedad;
 LiquidCrystal_I2C lcd(0x27,16,2); //Crea  objeto lcd  dirección  0x3F y 16 columnas x 2 filas
 DHT dht(DHTPIN, DHTTYPE);
 
-//Defino variables Sensor Humedad & Temperatura
-
-
 void setup() {
   IniciarLCD();
   ENCENDER_SENSOR_DHT;
@@ -55,18 +52,20 @@ void IniciarLCD(){
   lcd.clear();  
   }
 
+//lectura de valores a controlar.-
 void LeerTempHum(){
   humidity = LEER_HUMEDAD;
   temperature = LEER_TEMPERATURA;
   humedad = LEER_SENSOR;
   }
 
+//muestra por display los valores.-
 void ActualizarLCD(){
   static unsigned long tiempo_ant = 0;
   
   if(millis()-tiempo_ant < 1000) return;
   tiempo_ant = millis();
-  //Opcion 1
+  
   lcd.setCursor(0, 0);
   lcd.print("Temperatura:");
   lcd.setCursor(12, 0);
@@ -77,7 +76,7 @@ void ActualizarLCD(){
   lcd.print(humedad);
   lcd.setCursor(12, 1);
   lcd.print(humidity);
-  //lcd.print(" ");
+  
   
   
 }
