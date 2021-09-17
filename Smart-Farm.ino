@@ -7,18 +7,25 @@
 #define ENCENDER_SENSOR_DHT   dht.begin();                //inicia sensor dht
 #define LEER_HUMEDAD          dht.readHumidity();    //lee humedad ambiente
 #define LEER_TEMPERATURA      dht.readTemperature(); //lee temperatura ambiente
+float humidity, temperature;
 
+//sensorHumedadSuelo config.-
+#define SENSORPIN A0              //defino Pin SCL LCD                            A0
+#define CONFIGURAR_SENSORPIN  pinMode(SENSORPIN,INPUT);   //entrada de sensor suelo.
+#define LEER_SENSOR           analogRead(SENSORPIN); // lee Humedad de suelo
+int humedad;
 
 
 LiquidCrystal_I2C lcd(0x27,16,2); //Crea  objeto lcd  dirección  0x3F y 16 columnas x 2 filas
 DHT dht(DHTPIN, DHTTYPE);
 
 //Defino variables Sensor Humedad & Temperatura
-float humidity, temperature;
+
 
 void setup() {
   IniciarLCD();
   ENCENDER_SENSOR_DHT;
+  CONFIGURAR_SENSORPIN;
 }
 
 void loop() {
@@ -51,6 +58,7 @@ void IniciarLCD(){
 void LeerTempHum(){
   humidity = LEER_HUMEDAD;
   temperature = LEER_TEMPERATURA;
+  humedad = LEER_SENSOR;
   }
 
 void ActualizarLCD(){
@@ -59,15 +67,19 @@ void ActualizarLCD(){
   if(millis()-tiempo_ant < 1000) return;
   tiempo_ant = millis();
   //Opcion 1
-  lcd.setCursor(12, 0);
-  lcd.print(temperature);
-  lcd.setCursor(12, 1);
-  lcd.print(humidity);
-  lcd.print(" ");
   lcd.setCursor(0, 0);
   lcd.print("Temperatura:");
+  lcd.setCursor(12, 0);
+  lcd.print(temperature);
   lcd.setCursor(0, 1);
   lcd.print("Humedad:");
+  lcd.setCursor(8, 1);
+  lcd.print(humedad);
+  lcd.setCursor(12, 1);
+  lcd.print(humidity);
+  //lcd.print(" ");
+  
+  
 }
 
  
