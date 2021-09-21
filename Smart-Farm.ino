@@ -15,20 +15,33 @@ float humidity, temperature;
 #define LEER_SENSOR           analogRead(SENSORPIN); // lee Humedad de suelo
 int humedad;
 
+//Cooler config.-
+#define COOLER 15                  //defino cooler                               D10
+#define CONFIGURAR_COOLER  pinMode(COOLER,OUTPUT);   //entrada de sensor suelo.
+#define ACTIVAR_COOLER       digitalWrite(COOLER,HIGH);//Activa el buffer
+#define DESACTIVAR_COOLER    digitalWrite(COOLER,LOW);//desactiva el buffer
+
 
 LiquidCrystal_I2C lcd(0x27,16,2); //Crea  objeto lcd  dirección  0x3F y 16 columnas x 2 filas
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
+  Serial.begin(9600);
   IniciarLCD();
   ENCENDER_SENSOR_DHT;
   CONFIGURAR_SENSORPIN;
+  CONFIGURAR_COOLER;
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
   LeerTempHum();
   ActualizarLCD();
-
+  digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);                       // wait for a second
+  digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);                       // wait for a second
+  
 }
 
 //Presentacion de inicio de programa.-
@@ -60,7 +73,7 @@ void LeerTempHum(){
   }
 
 //muestra por display los valores.-
-gvoid ActualizarLCD(){
+void ActualizarLCD(){
   static unsigned long tiempo_ant = 0;
   
   if(millis()-tiempo_ant < 1000) return;
@@ -76,9 +89,17 @@ gvoid ActualizarLCD(){
   lcd.print(humedad);
   lcd.setCursor(12, 1);
   lcd.print(humidity);
+  Serial.print("Temperatura:");
+ 
+  Serial.print(temperature);
   
+  Serial.print("Humedad:");
   
-  
+  Serial.print(humedad);
+ 
+  Serial.print(humidity);
+  Serial.print("\n");
+
 }
 
  
