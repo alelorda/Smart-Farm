@@ -60,7 +60,7 @@ void LeerTempHum(){
   }
 
 //muestra por display los valores.-
-void ActualizarLCD(){
+gvoid ActualizarLCD(){
   static unsigned long tiempo_ant = 0;
   
   if(millis()-tiempo_ant < 1000) return;
